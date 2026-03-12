@@ -1,4 +1,4 @@
-# Pet Health Centre
+# Pet Health Centre (Clinic Management System)
 
 > Ref URL: https://pethealthcentre.vn
 
@@ -6,21 +6,22 @@
 
 ### Who Uses This?
 
-- **Guest** – Unregistered users who want to browse centre info, products, and services
-- **Customer** – Pet owners with a registered account
-- **Staff** – Centre employees who manage appointments and inventory
-- **Vet** – Veterinarians who view and update pet medical records
+- **Guest** – Người dùng chưa đăng ký, muốn tìm hiểu thông tin phòng khám, đội ngũ bác sĩ và các dịch vụ.
+- **Customer** – Chủ thú cưng đã có tài khoản, cần đặt lịch khám và theo dõi hồ sơ sức khỏe của pet.
+- **Staff** – Lễ tân/Quản lý phòng khám: Điều phối lịch hẹn, gán ca cho bác sĩ, quản lý kho thuốc và thanh toán viện phí.
+- **Vet** – Bác sĩ thú y: Khám bệnh, ghi nhận hồ sơ bệnh án và kê đơn thuốc.
 
 ### What Is the Problem?
 
-- Customers must call to book services — time-consuming and prone to scheduling errors
-- Physical vet notebooks are easily lost and information is not stored centrally
+- Khách hàng gọi điện đặt lịch thủ công dễ dẫn đến sai sót, trùng lịch hoặc phải chờ đợi lâu khi đến phòng khám.
+- Sổ khám bệnh vật lý dễ bị mất, bác sĩ khó tra cứu lại lịch sử bệnh nền hoặc các loại thuốc thú cưng đã dùng trước đó (nguy cơ dị ứng thuốc).
+- Quy trình tính tiền thủ công (cộng tiền khám + tiền thuốc) mất thời gian và khó kiểm soát doanh thu/tồn kho.
 
 ### Why Is This Useful?
 
-- Pet information and medical records are stored digitally, preventing data loss
-- Customers can book services online without calling
-- Staff and vets manage schedules and records directly on the platform
+- **Trải nghiệm mượt mà:** Khách chủ động đặt lịch theo khung giờ, phòng khám điều phối bác sĩ hợp lý để giảm thời gian chờ.
+- **Bệnh án điện tử (EHR):** Lưu trữ tập trung mọi chỉ số sức khỏe, chẩn đoán, đơn thuốc của thú cưng qua từng lần khám.
+- **Minh bạch tài chính & Tồn kho:** Mọi dịch vụ và thuốc kê đơn đều tự động đổ về một Hóa đơn (Invoice) duy nhất để thanh toán chính xác, đồng thời tự động trừ tồn kho.
 
 ---
 
@@ -28,12 +29,11 @@
 
 | Layer      | Technology                        |
 |------------|-----------------------------------|
-| Frontend   | TBD (React / Next.js recommended) |
+| Frontend   | Next.js                           |
 | Backend    | Go                                |
-| Database   | TBD (PostgreSQL recommended)      |
-| Realtime   | WebSocket (future phase)          |
+| Database   | PostgreSQL                        |
 | Auth       | JWT                               |
-| Deployment | TBD                               |
+| Deployment | Homelab, AWS                      |
 
 ---
 
@@ -41,40 +41,39 @@
 
 ### Roles
 
-| Role     | Description |
-|----------|-------------|
-| Guest    | Not logged in; can view public information |
-| Customer | Registered; manages pets and books services |
-| Staff    | Manages appointments, products, and customer chat |
-| Vet      | Views and updates pet medical records |
+| Role       | Description |
+|------------|-------------|
+| Guest      | Khách vãng lai; xem thông tin chung và bảng giá dịch vụ |
+| Customer   | Khách hàng; quản lý pet, đặt lịch khám, xem bệnh án và hóa đơn |
+| Staff      | Lễ tân; duyệt lịch, gán bác sĩ, xuất hóa đơn, quản lý kho thuốc |
+| Vet        | Bác sĩ; xem lịch làm việc, khám bệnh, điền bệnh án, kê đơn |
 
 ---
 
 ### User Stories
 
 #### Guest
-- I want to view centre information (address, opening hours, contact) so I can decide if it suits my needs
-- I want to browse and compare products so I can find the right one for my pet
-- I want to view services and their details so I can decide whether to book
-- I want to chat with staff directly on the website so I don't need to open another app
+- Tôi muốn xem thông tin phòng khám (địa chỉ, giờ mở cửa, liên hệ).
+- Tôi muốn xem danh sách các dịch vụ (Khám tổng quát, Tiêm phòng, Triệt sản...) và bảng giá tham khảo.
 
 #### Customer
-- I want to register and log in so I can access personalised features
-- I want to create, view, edit, and delete my pet profiles so I don't have to re-enter details every time I book
-- I want to book spa or vet services online so I don't have to call
-- I want to view my booking and order history
-- I want to add products to my cart and check out (mock payment) for a convenient shopping experience
+- Tôi muốn đăng ký/đăng nhập để sử dụng dịch vụ.
+- Tôi muốn tạo và quản lý hồ sơ thú cưng (tên, loài, giống, tuổi, cân nặng ban đầu).
+- Tôi muốn đặt lịch khám (chọn Dịch vụ + Ngày giờ) để không phải chờ đợi.
+- Tôi muốn xem lại Lịch sử khám bệnh (Triệu chứng, Bác sĩ chẩn đoán, Đơn thuốc) của pet nhà tôi.
+- Tôi muốn xem chi tiết Hóa đơn viện phí sau khi khám xong.
 
 #### Staff
-- I want to view the daily and weekly appointment schedule so I know what needs to be done
-- I want to confirm or cancel customer appointments to manage the schedule efficiently
-- I want to chat with customers to give advice and support
-- I want to check current product stock levels so I know when to reorder
+- Tôi muốn xem danh sách lịch hẹn trong ngày để chủ động sắp xếp.
+- Tôi muốn xác nhận lịch hẹn và **gán Bác sĩ (Assign Vet)** cho ca khám đó.
+- Tôi muốn xem/cập nhật danh mục Thuốc & Vật tư y tế (tên thuốc, số lượng tồn kho, giá bán).
+- Tôi muốn thu tiền khách hàng dựa trên Hóa đơn (gồm tiền dịch vụ + tiền thuốc) và chuyển trạng thái thành "Đã thanh toán".
 
 #### Vet
-- I want to view the day's appointment schedule so I can prepare in advance
-- I want to view a pet's medical history so I can avoid prescribing medicines with adverse interactions
-- I want to create and update medical records after each visit so history is stored digitally
+- Tôi muốn xem danh sách các ca khám đã được Staff gán cho tôi trong ngày hôm nay.
+- Tôi muốn xem lịch sử bệnh án của một thú cưng trước khi bắt đầu khám.
+- Tôi muốn tạo Bệnh án mới sau khi khám xong (Ghi nhận cân nặng, nhiệt độ, triệu chứng, chẩn đoán).
+- Tôi muốn kê đơn thuốc cho thú cưng (chọn từ danh mục kho thuốc của phòng khám).
 
 ---
 
@@ -82,67 +81,46 @@
 
 ### Must Have (MVP)
 
-**Pet**
-- CRUD pet profile (name, species, breed, age, photo)
-- View list of pets linked to an account
+**1. Auth & Profiles**
+- Register, Login, Logout (JWT).
+- Quản lý thông tin cá nhân (Customer, Staff, Vet).
 
-**User / Auth**
-- Register, log in, log out (JWT)
-- CRUD user profile
-- View booking and order history
+**2. Pet Management**
+- CRUD Pet Profile (Tên, loài, giống, ngày sinh/tuổi).
+- Liệt kê danh sách pet theo tài khoản Customer.
 
-**Product**
-- Browse and search products
-- View product details
+**3. Appointment & Workflow (Lõi hệ thống)**
+- Khách hàng đặt lịch (Chọn Dịch vụ + Khung giờ).
+- State Machine cho Lịch hẹn: `Pending` (Chờ duyệt) -> `Confirmed` (Đã gán Bác sĩ) -> `In_Progress` (Đang khám) -> `Completed` (Khám xong, chờ thanh toán).
+- Staff quản lý lịch hẹn: Xác nhận, hủy, gán Bác sĩ.
 
-**Service**
-- View service list (spa, check-up, vaccination, etc.)
-- Book a service for a pet
+**4. Medical Records & Pharmacy (Bệnh án & Thuốc)**
+- Bảng danh mục Thuốc (Tên, đơn vị, giá, số lượng tồn - CRUD bởi Staff).
+- Vet điền form Bệnh án: Sinh hiệu (Cân nặng, Nhiệt độ), Chẩn đoán, Lời khuyên.
+- Vet kê đơn: Chọn thuốc từ DB, nhập số lượng, liều dùng (sáng 1 viên, tối 1 viên...).
 
-**Shopping**
-- Add / remove products from cart
-- Checkout (mock payment)
-
-**Staff**
-- View appointment schedule
-- Confirm / cancel appointments
-
-**Vet**
-- View appointment schedule
-- View, create, and update pet medical records
+**5. Billing & Invoicing (Viện phí)**
+- Hệ thống tự động tạo Invoice khi lịch hẹn chuyển sang trạng thái `Completed`.
+- Total = Phí dịch vụ khám + Tổng tiền đơn thuốc.
+- Staff xác nhận thu tiền và đổi trạng thái Invoice thành `Paid`. Tự động trừ số lượng tồn kho của thuốc.
 
 ### Should Have (Phase 2)
-
-- Product filter (by type, price, pet)
-- Real payment gateway (VNPay / Momo)
-- Realtime chat (Staff ↔ Customer)
-- Notification system (email / in-app)
-- Blog / knowledge articles
-- Mobile app
+- Tích hợp cổng thanh toán (VNPay / Momo) để khách trả viện phí online qua điện thoại lúc đang ngồi chờ.
+- Upload file đính kèm cho bệnh án (Ảnh chụp X-Quang, file PDF kết quả xét nghiệm máu).
+- Hệ thống Notification (Gửi email/SMS nhắc lịch khám ngày mai, nhắc lịch tiêm phòng định kỳ).
+- Realtime chat (Staff ↔ Customer).
 
 ### Nice to Have (Future)
-
-- Delivery system
-- Improved UI/UX & design system
-- Analytics dashboard for Staff / Admin
+- Dashboard Thống kê cho Quản lý (Doanh thu theo ngày/tháng, số lượng ca khám, bác sĩ nào đông khách nhất).
+- Quản lý ca làm việc (Shift Management) phức tạp cho đội ngũ Bác sĩ/Lễ tân.
+- Hệ thống theo dõi nội trú (Dành cho thú cưng phải nằm viện qua đêm).
 
 ---
 
 ## Success Metrics
 
-- [ ] Guest can browse products and services without logging in
-- [ ] Customer can register → add a pet → book a service end-to-end
-- [ ] Customer can add products to cart → complete checkout (mock payment)
-- [ ] Staff can view, confirm, and cancel appointments
-- [ ] Vet can view and update a pet's medical record
-- [ ] Staff can view current product stock quantity
-
----
-
-## Open Questions
-
-- Frontend framework: React / Next.js or Vue / Nuxt.js?
-- Database: PostgreSQL or MySQL?
-- Deployment: self-managed VPS or cloud (GCP / AWS)?
-- Payment: VNPay or Momo integration for Phase 2?
-- Admin role: is a separate Admin role needed to manage Staff and Vet accounts?
+- [ ] Customer có thể thêm Pet và đặt lịch hẹn thành công.
+- [ ] Staff thấy được lịch hẹn, có thể gán Vet phụ trách.
+- [ ] Vet thấy lịch được gán, hoàn tất điền Bệnh án và kê Đơn thuốc.
+- [ ] Hệ thống tự động sinh Hóa đơn (Invoice) chính xác dựa trên Dịch vụ và Đơn thuốc.
+- [ ] Staff xác nhận thanh toán thành công và kho thuốc tự động trừ đi số lượng đã kê đơn.
